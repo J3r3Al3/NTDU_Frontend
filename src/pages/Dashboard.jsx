@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useExpenses } from '../hooks/useExpenses.js';
 import { computeAnalytics } from '../lib/analytics.js';
 import PremiumGate from '../components/premium/PremiumGate.jsx';
-import FinancialAssistant from '../components/dashboard/FinancialAssistant.jsx';
+import FinancialAssistant from './dashboard/FinancialAssistant.jsx';
 import HeroBalance from '../components/dashboard/HeroBalance.jsx';
 import SmartCards from '../components/dashboard/SmartCards.jsx';
 import IncomeExpenseChart from '../components/dashboard/IncomeExpenseChart.jsx';
