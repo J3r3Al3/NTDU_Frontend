@@ -20,9 +20,7 @@ export default function FinancialAssistant({ analytics }) {
       
       const response = await fetch(`${supabaseUrl}/functions/v1/financial-advisor`, {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' 
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           pregunta: preguntaUsuario, 
           contexto: analytics 
@@ -35,20 +33,22 @@ export default function FinancialAssistant({ analytics }) {
       setMensajes(prev => [...prev, { role: 'assistant', content: data.respuesta }]);
     } catch (error) {
       console.error("Error:", error);
-      setMensajes(prev => [...prev, { role: 'assistant', content: "Error de conexión con el asistente." }]);
+      setMensajes(prev => [...prev, { role: 'assistant', content: "Error de conexión." }]);
     }
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-[2147483647]">
+      {/* Botón principal */}
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className="p-4 bg-[#00E56A] text-black font-bold rounded-full shadow-lg hover:scale-105 transition-all"
+        className="p-4 bg-[#00E56A] text-black font-bold rounded-full shadow-2xl hover:scale-105 transition-all"
         aria-label="Abrir asistente"
       >
         {isOpen ? "✕" : "💬"}
       </button>
 
+      {/* Chat window */}
       {isOpen && (
         <div className="fixed bottom-24 right-6 w-[320px] h-[450px] sm:right-8 z-[2147483647] animate-in slide-in-from-bottom-5 fade-in duration-300">
           <BorderGlow 

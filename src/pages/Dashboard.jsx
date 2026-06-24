@@ -4,10 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useExpenses } from '../hooks/useExpenses.js';
 import { computeAnalytics } from '../lib/analytics.js';
 import PremiumGate from '../components/premium/PremiumGate.jsx';
-
-// Importación directa del componente para asegurar su disponibilidad
 import FinancialAssistant from '../components/dashboard/FinancialAssistant.jsx';
-
 import HeroBalance from '../components/dashboard/HeroBalance.jsx';
 import SmartCards from '../components/dashboard/SmartCards.jsx';
 import IncomeExpenseChart from '../components/dashboard/IncomeExpenseChart.jsx';
@@ -21,13 +18,11 @@ export default function Dashboard() {
     const { gastos, loading, crearGasto, eliminarGasto } = useExpenses();
     const [modalOpen, setModalOpen] = useState(false);
 
-    // Cálculo optimizado de analíticas
     const a = useMemo(() => {
         if (loading || !gastos) return null;
         return computeAnalytics(gastos);
     }, [gastos, loading]);
 
-    // Pantalla de carga
     if (loading || !a) {
         return (
             <div className="min-h-screen bg-[#f7f8fa]">
@@ -85,11 +80,7 @@ export default function Dashboard() {
                 onSubmit={crearGasto} 
             />
 
-            {/* BOTÓN DEL ASISTENTE FINANCIERO */}
-            {/* Se ubica aquí para asegurar que flote sobre el resto del contenido */}
-            <div className="fixed bottom-6 right-6 z-[9999]">
-                <FinancialAssistant analytics={a} />
-            </div>
+            <FinancialAssistant analytics={a} />
         </div>
     );
 }
