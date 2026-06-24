@@ -4,14 +4,14 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useExpenses } from '../hooks/useExpenses.js';
 import { computeAnalytics } from '../lib/analytics.js';
 import PremiumGate from '../components/premium/PremiumGate.jsx';
-import FinancialAssistant from '../components/finanzas/FinancialAssistant.jsx';
-import HeroBalance from '../components/finanzas/HeroBalance.js';
-import SmartCards from '../components/finanzas/SmartCards.js';
-import IncomeExpenseChart from '../components/finanzas/IncomeExpenseChart.js';
-import CategoryDistribution from '../components/finanzas/CategoryDistribution.js';
-import Insights from '../components/finanzas/Insights.js';
-import TransactionsTable from '../components/finanzas/TransactionsTable.jsx';
-import AddTransactionModal from '../components/finanzas/AddTransactionModal.js';
+import FinancialAssistant from '../components/dashboard/FinancialAssistant.jsx';
+import HeroBalance from '../components/dashboard/HeroBalance.js';
+import SmartCards from '../components/dashboard/SmartCards.js';
+import IncomeExpenseChart from '../components/dashboard/IncomeExpenseChart.js';
+import CategoryDistribution from '../components/dashboard/CategoryDistribution.js';
+import Insights from '../components/dashboard/Insights.js';
+import TransactionsTable from '../components/dashboard/TransactionsTable.jsx';
+import AddTransactionModal from '../components/dashboard/AddTransactionModal.js';
 
 export default function Dashboard() {
     const { user } = useAuth();
