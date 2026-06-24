@@ -10,20 +10,32 @@ export default function FinancialAssistant({ analytics }) {
 
   const enviarPregunta = async () => {
     if (!input.trim()) return;
+    
     const preguntaUsuario = input;
-    setInput(""); // Limpiamos el input al enviar
+    setInput(""); 
     setMensajes(prev => [...prev, { role: 'user', content: preguntaUsuario }]);
 
     try {
-      const response = await fetch("https://rfvwcaiqyksocjwhezjb.supabase.co/functions/v1/financial-advisor", {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/financial-advisor`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pregunta: preguntaUsuario, contexto: analytics })
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ 
+          pregunta: preguntaUsuario, 
+          contexto: analytics 
+        })
       });
+
+      if (!response.ok) throw new Error("Error en el servidor");
+
       const data = await response.json();
       setMensajes(prev => [...prev, { role: 'assistant', content: data.respuesta }]);
     } catch (error) {
-      setMensajes(prev => [...prev, { role: 'assistant', content: "Error de conexión." }]);
+      console.error("Error:", error);
+      setMensajes(prev => [...prev, { role: 'assistant', content: "Error de conexión con el asistente." }]);
     }
   };
 
@@ -32,6 +44,7 @@ export default function FinancialAssistant({ analytics }) {
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         className="p-4 bg-[#00E56A] text-black font-bold rounded-full shadow-lg hover:scale-105 transition-all"
+        aria-label="Abrir asistente"
       >
         {isOpen ? "✕" : "💬"}
       </button>
@@ -59,7 +72,6 @@ export default function FinancialAssistant({ analytics }) {
                 ))}
               </div>
 
-              {/* Contenedor del Input y Botón */}
               <div className="relative flex items-center">
                 <input 
                   value={input}
