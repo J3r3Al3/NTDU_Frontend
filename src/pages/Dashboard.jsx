@@ -7,11 +7,11 @@ import PremiumGate from '../components/premium/PremiumGate.jsx';
 import FinancialAssistant from '../components/dashboard/FinancialAssistant.jsx';
 import HeroBalance from '../components/dashboard/HeroBalance.jsx';
 import SmartCards from '../components/dashboard/SmartCards.jsx';
-import IncomeExpenseChart from '../components/dashboard/IncomeExpenseChart.js';
-import CategoryDistribution from '../components/dashboard/CategoryDistribution.js';
-import Insights from '../components/dashboard/Insights.js';
+import IncomeExpenseChart from '../components/dashboard/IncomeExpenseChart.jsx';
+import CategoryDistribution from '../components/dashboard/CategoryDistribution.jsx';
+import Insights from '../components/dashboard/Insights.jsx';
 import TransactionsTable from '../components/dashboard/TransactionsTable.jsx';
-import AddTransactionModal from '../components/dashboard/AddTransactionModal.js';
+import AddTransactionModal from '../components/dashboard/AddTransactionModal.jsx';
 
 export default function Dashboard() {
     const { user } = useAuth();
