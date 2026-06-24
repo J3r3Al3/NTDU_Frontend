@@ -5,92 +5,56 @@ export default function FinancialAssistant({ analytics }) {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [mensajes, setMensajes] = useState([
-    { role: 'assistant', content: '¡Hola! Soy tu asistente financiero. ¿Qué deseas consultar hoy?' }
+    { role: 'assistant', content: '¡Hola! ¿En qué puedo ayudarte con tus finanzas hoy?' }
   ]);
 
   const enviarPregunta = async () => {
     if (!input.trim()) return;
-    
-    const preguntaUsuario = input;
-    setInput(""); 
-    setMensajes(prev => [...prev, { role: 'user', content: preguntaUsuario }]);
+    setMensajes(prev => [...prev, { role: 'user', content: input }]);
+    const pregunta = input;
+    setInput("");
 
     try {
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      
-      const response = await fetch(`${supabaseUrl}/functions/v1/financial-advisor`, {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/financial-advisor`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          pregunta: preguntaUsuario, 
-          contexto: analytics 
-        })
+        body: JSON.stringify({ pregunta, contexto: analytics })
       });
-
-      if (!response.ok) throw new Error("Error en el servidor");
-
       const data = await response.json();
       setMensajes(prev => [...prev, { role: 'assistant', content: data.respuesta }]);
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (e) {
       setMensajes(prev => [...prev, { role: 'assistant', content: "Error de conexión." }]);
     }
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[2147483647]">
-      {/* Botón principal */}
+    <div className="fixed bottom-6 right-6 z-[999999] pointer-events-auto">
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className="p-4 bg-[#00E56A] text-black font-bold rounded-full shadow-2xl hover:scale-105 transition-all"
-        aria-label="Abrir asistente"
+        className="w-14 h-14 flex items-center justify-center bg-[#00E56A] text-black text-2xl rounded-full shadow-2xl hover:scale-110 transition-transform"
       >
         {isOpen ? "✕" : "💬"}
       </button>
 
-      {/* Chat window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-[320px] h-[450px] sm:right-8 z-[2147483647] animate-in slide-in-from-bottom-5 fade-in duration-300">
-          <BorderGlow 
-            className="w-full h-full"
-            borderRadius={24} 
-            backgroundColor="#0A0B0D" 
-            glowColor="148 100% 45%" 
-            glowIntensity={0.6}
-            colors={['#00E56A', '#1fe884', '#068f45']}
-          >
-            <div className="h-full flex flex-col p-5 bg-[#0A0B0D] rounded-[24px]">
-              <h3 className="font-bold text-white mb-4 border-b border-white/10 pb-2">Asistente Financiero</h3>
-              
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
-                {mensajes.map((m, i) => (
-                  <div key={i} className={`text-sm p-3 rounded-2xl max-w-[90%] ${
-                    m.role === 'user' ? 'bg-[#00E56A] text-black ml-auto rounded-br-none' : 'bg-[#1A1D23] text-white rounded-bl-none'
-                  }`}>
-                    {m.content}
-                  </div>
-                ))}
+        <div className="absolute bottom-20 right-0 w-[320px] h-[450px] bg-[#0A0B0D] rounded-3xl border border-white/10 shadow-2xl p-4 flex flex-col">
+          <h3 className="text-white font-bold mb-3">Asistente Financiero</h3>
+          <div className="flex-1 overflow-y-auto space-y-2 mb-3">
+            {mensajes.map((m, i) => (
+              <div key={i} className={`p-2 rounded-lg text-xs ${m.role === 'user' ? 'bg-[#00E56A] text-black ml-auto' : 'bg-[#1A1D23] text-white'}`}>
+                {m.content}
               </div>
-
-              <div className="relative flex items-center">
-                <input 
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') enviarPregunta(); }}
-                  className="w-full bg-[#1A1D23] border border-white/5 rounded-full px-5 py-3 text-sm text-white outline-none focus:border-[#00E56A] pr-12"
-                  placeholder="Escribe tu consulta..."
-                />
-                <button 
-                  onClick={enviarPregunta}
-                  className="absolute right-2 p-2 bg-[#00E56A] rounded-full text-black hover:bg-white transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </BorderGlow>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input 
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="flex-1 bg-[#1A1D23] text-white p-2 rounded-lg text-sm outline-none"
+              placeholder="Consulta..."
+            />
+            <button onClick={enviarPregunta} className="bg-[#00E56A] p-2 rounded-lg">Enviar</button>
+          </div>
         </div>
       )}
     </div>

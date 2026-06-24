@@ -23,6 +23,7 @@ export default function Dashboard() {
         return computeAnalytics(gastos);
     }, [gastos, loading]);
 
+    // Caso de carga
     if (loading || !a) {
         return (
             <div className="min-h-screen bg-[#f7f8fa]">
@@ -33,10 +34,13 @@ export default function Dashboard() {
                         <p className="text-gray-400 text-sm font-medium">Cargando tu panel financiero...</p>
                     </div>
                 </div>
+                {/* El asistente aparece aunque esté cargando */}
+                <FinancialAssistant analytics={{}} />
             </div>
         );
     }
 
+    // Caso con datos cargados
     return (
         <div className="min-h-screen bg-[#f7f8fa] relative">
             <Navbar />
@@ -80,6 +84,7 @@ export default function Dashboard() {
                 onSubmit={crearGasto} 
             />
 
+            {/* Asistente siempre presente */}
             <FinancialAssistant analytics={a} />
         </div>
     );
