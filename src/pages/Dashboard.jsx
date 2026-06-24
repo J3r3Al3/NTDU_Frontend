@@ -31,11 +31,13 @@ export default function Dashboard() {
                 <div className="flex items-center justify-center h-[70vh]">
                     <div className="text-center space-y-3">
                         <div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                        <p className="text-gray-400 text-sm font-medium">Cargando tu panel financiero...</p>
+                        <p className="text-gray-400 text-sm font-medium">Cargando...</p>
                     </div>
                 </div>
-                {/* El asistente aparece aunque esté cargando */}
-                <FinancialAssistant analytics={{}} />
+                {/* Asistente incluso en carga */}
+                <div style={{ position: 'fixed', bottom: '100px', right: '100px', zIndex: 999999 }}>
+                    <FinancialAssistant analytics={{}} />
+                </div>
             </div>
         );
     }
@@ -84,8 +86,10 @@ export default function Dashboard() {
                 onSubmit={crearGasto} 
             />
 
-            {/* Asistente siempre presente */}
-            <FinancialAssistant analytics={a} />
+            {/* Asistente forzado en pantalla para pruebas */}
+            <div style={{ position: 'fixed', bottom: '100px', right: '100px', zIndex: 999999 }}>
+                <FinancialAssistant analytics={a || {}} />
+            </div>
         </div>
     );
 }
